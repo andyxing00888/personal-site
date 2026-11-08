@@ -1632,3 +1632,4 @@ logged_utc,log_ts,hours_to_close,rule,H,series,event,ticker,side,price,bid,ask,m
 2026-11-08T21:05:00+00:00,1794171900,24.92,sell_longshot_div,24,KXBTCD,KXBTCD-26NOV0917,,none,,,,
 2026-11-08T21:05:00+00:00,1794171900,24.92,sell_longshot_div,24,KXETHD,KXETHD-26NOV0917,KXETHD-26NOV0917-T2319.99,sell_yes,0.08,0.06,0.08,0.07
 2026-11-08T21:05:00+00:00,1794171900,24.92,sell_longshot_div,24,KXETHD,KXETHD-26NOV0917,,none,,,,
+2026-11-08T22:05:00+00:00,1794175500,6.9,sell_longshot,6,KXAAAGASD,KXAAAGASD-26NOV09,,none,,,,
