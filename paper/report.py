@@ -16,20 +16,53 @@ from paper.trader import ORDERS, SCORED
 
 REPORTS = os.path.join(PAPER, "reports")
 MIN_FILLS = 100  # fills before a verdict
+MIN_EVENTS = 60  # events before an edge verdict: 100 fills can be a handful of ladders
 
 
 def money(x):
     return f"{x * 100:+.1f}¢"
 
 
-def verdict(n, lo, hi):
+def worst_event(fills):
+    """P&Ls of the worst net-losing (horizon, event) among fills, or [] if no event has lost money."""
+    g = collections.defaultdict(list)
+    for r in fills:
+        g[(r["H"], r["event"])].append(float(r["pnl"]))
+    worst = min(g.values(), key=sum, default=[])
+    return worst if sum(worst) < 0 else []
+
+
+def edge_gaps(fills, rule_fills):
+    """Why a CI above 0 doesn't prove an edge yet. An event bootstrap can't produce a bad event the
+    sample hasn't had, so the CI must also hold with the worst event from any horizon of the rule added."""
+    xs = [float(r["pnl"]) for r in fills]
+    events = [r["event"] for r in fills]
+    gaps = []
+    if len(set(events)) < MIN_EVENTS:
+        gaps.append(f"{len(set(events))}/{MIN_EVENTS} events")
+    tail = worst_event(rule_fills)
+    if not tail:
+        gaps.append("no losing event seen")
+    elif boot(xs + tail, events + ["stress"] * len(tail))[0] <= 0:
+        gaps.append("fails tail stress")
+    series = collections.defaultdict(float)
+    for r, x in zip(fills, xs):
+        series[r["series"]] += x
+    if len(series) < 2 or any(sum(xs) - v <= 0 for v in series.values()):
+        gaps.append("one series carries it")
+    return gaps
+
+
+def verdict(n, lo, hi, gaps=()):
     if n < MIN_FILLS:
         return f"collecting ({n}/{MIN_FILLS})"
-    if lo > 0:
-        return "**edge** (CI above 0)"
     if hi < 0:
         return "losing (CI below 0)"
-    return "no edge yet (CI spans 0)"
+    if lo <= 0:
+        return "no edge yet (CI spans 0)"
+    if gaps:
+        return f"unproven ({', '.join(gaps)})"
+    return "**edge** (CI above 0, passes tail checks)"
 
 
 def table(rows, cols):
@@ -51,11 +84,14 @@ def stats_by_strategy(scored):
             ci = f"{money(lo)} to {money(hi)}"
         else:
             lo, hi, ci = 0, 0, "—"
+        gaps = ()
+        if len(f) >= MIN_FILLS and lo > 0:
+            gaps = edge_gaps(f, [r for r in scored if r["rule"] == rule and r["filled"] == "1"])
         rows.append(dict(name=f"`{rule}` {H}h", orders=len(rs), fills=len(f),
                          rate=f"{len(f) / len(rs):.0%}" if rs else "—",
                          per=money(mean(xs)) if xs else "—", ci=ci,
                          total=f"${sum(xs):+.2f}" if xs else "$0.00",
-                         verdict=verdict(len(f), lo, hi), _total=sum(xs)))
+                         verdict=verdict(len(f), lo, hi, gaps), _total=sum(xs)))
     return rows
 
 
@@ -145,7 +181,8 @@ def main():
 
     cum = stats_by_strategy(scored)
     L += ["## Cumulative scoreboard", "",
-          f"Verdict needs {MIN_FILLS}+ fills; CI is 95%, resampled by event.", "",
+          f"Verdict needs {MIN_FILLS}+ fills; CI is 95%, resampled by event. **edge** also needs {MIN_EVENTS}+ events, "
+          "a CI still above 0 with the rule's worst event added, and P&L above 0 without its best series.", "",
           table([(r["name"], r["orders"], r["fills"], r["rate"], r["per"], r["ci"], r["total"], r["verdict"]) for r in cum],
                 ["Strategy", "Orders", "Fills", "Fill rate", "P&L / contract", "95% CI", "Total", "Verdict"])
           if cum else "_No settled orders yet._", ""]
