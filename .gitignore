@@ -1,3 +1,4 @@
 __pycache__/
 # backtest inputs: large and re-creatable with pull_*.py
 /data/
+.DS_Store
