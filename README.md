@@ -2,17 +2,17 @@
 
 Forward test of Kalshi strategies: forecast-free rules on weather, econ and a diversified non-sports basket (rules in [strategies.py](paper/strategies.py)), plus the experiments below.
 
-## Summary (as of 2026-11-22)
+## Summary (as of 2026-11-23)
 
 | Metric | Value |
 |---|--:|
-| 🔴 Total P&L | **$-10.76** over 1454 fills |
-| 🔴 P&L / contract | -0.7¢ |
+| 🔴 Total P&L | **$-7.93** over 1517 fills |
+| 🔴 P&L / contract | -0.5¢ |
 | Win rate | 74% |
-| Profit factor | 0.95 |
+| Profit factor | 0.96 |
 | Max drawdown | -$33.43 |
-| Sharpe (ann.) | -1.71 |
-| 🔴 Today | $-3.59 (75 fills) |
+| Sharpe (ann.) | -1.23 |
+| 🟢 Today | $+2.83 (63 fills) |
 
 Full dashboard: https://functionalleaf.github.io/kalshi-weather/
 
@@ -20,8 +20,8 @@ Full dashboard: https://functionalleaf.github.io/kalshi-weather/
 
 | Experiment | Data | Status |
 |---|--:|--:|
-| Liquidity rewards (`lip.py`), 300/side on watchlist | 388 runs / ~31h | rewards $13,156.92, fills $-32,563.31 (201011 settled, 42926.2 open) → **net $-19,406.39** |
-| S&P/Nasdaq cross-series arb (`consistency.py`) | 317 runs | 0 arbs after fees, best edge -1.0¢ |
+| Liquidity rewards (`lip.py`), 300/side on watchlist | 405 runs / ~31h | rewards $13,775.73, fills $-33,979.05 (207002 settled, 45186.7 open) → **net $-20,203.31** |
+| S&P/Nasdaq cross-series arb (`consistency.py`) | 334 runs | 0 arbs after fees, best edge -1.0¢ |
 | Kalshi vs Polymarket sports (`xvenue.py`) | 205 runs | 12928 team quotes, 0 buy-Kalshi arbs after fees |
 
 ## Scoreboard
@@ -30,30 +30,31 @@ Full dashboard: https://functionalleaf.github.io/kalshi-weather/
 |---|--:|--:|--:|--:|--:|
 | `bump` 24h | 1 | +29.0¢ | — | $+0.29 | collecting (1/100) |
 | `bump` 30h | 2 | +22.0¢ | — | $+0.44 | collecting (2/100) |
-| `fade_move` 18h | 39 | +2.6¢ | -15.2¢ to +21.1¢ | $+1.02 | collecting (39/100) |
-| `fade_move` 24h | 41 | +1.7¢ | -13.6¢ to +17.6¢ | $+0.69 | collecting (41/100) |
-| `fade_move` 30h | 35 | -3.1¢ | -17.4¢ to +12.4¢ | $-1.09 | collecting (35/100) |
-| `fav_longshot` 18h | 226 | -2.6¢ | -8.8¢ to +3.7¢ | $-5.98 | no edge yet (CI spans 0) |
-| `fav_longshot` 24h | 218 | +3.3¢ | -2.6¢ to +9.0¢ | $+7.27 | no edge yet (CI spans 0) |
-| `fav_longshot` 30h | 219 | -0.5¢ | -6.7¢ to +5.8¢ | $-1.18 | no edge yet (CI spans 0) |
-| `follow_move` 18h | 40 | -9.1¢ | -28.2¢ to +10.1¢ | $-3.65 | collecting (40/100) |
-| `follow_move` 24h | 44 | +2.4¢ | -13.1¢ to +16.6¢ | $+1.07 | collecting (44/100) |
-| `follow_move` 30h | 29 | -2.2¢ | -17.3¢ to +15.2¢ | $-0.63 | collecting (29/100) |
-| `overround` 18h | 29 | +0.8¢ | -8.6¢ to +10.3¢ | $+0.23 | collecting (29/100) |
-| `overround` 24h | 15 | -0.9¢ | -20.1¢ to +12.7¢ | $-0.14 | collecting (15/100) |
-| `overround` 30h | 29 | -7.2¢ | -23.0¢ to +6.8¢ | $-2.10 | collecting (29/100) |
+| `fade_move` 18h | 41 | +0.3¢ | -16.4¢ to +18.3¢ | $+0.13 | collecting (41/100) |
+| `fade_move` 24h | 44 | +4.1¢ | -12.0¢ to +20.2¢ | $+1.82 | collecting (44/100) |
+| `fade_move` 30h | 37 | -1.3¢ | -15.6¢ to +13.6¢ | $-0.49 | collecting (37/100) |
+| `fav_longshot` 18h | 234 | -2.3¢ | -8.4¢ to +4.1¢ | $-5.33 | no edge yet (CI spans 0) |
+| `fav_longshot` 24h | 228 | +2.8¢ | -3.0¢ to +8.7¢ | $+6.29 | no edge yet (CI spans 0) |
+| `fav_longshot` 30h | 229 | -0.4¢ | -6.1¢ to +5.5¢ | $-0.98 | no edge yet (CI spans 0) |
+| `follow_move` 18h | 43 | -5.7¢ | -25.3¢ to +13.4¢ | $-2.45 | collecting (43/100) |
+| `follow_move` 24h | 46 | -0.5¢ | -16.2¢ to +13.9¢ | $-0.25 | collecting (46/100) |
+| `follow_move` 30h | 31 | -4.0¢ | -18.5¢ to +11.5¢ | $-1.25 | collecting (31/100) |
+| `overround` 18h | 31 | +2.5¢ | -8.1¢ to +12.3¢ | $+0.76 | collecting (31/100) |
+| `overround` 24h | 18 | -3.1¢ | -23.2¢ to +12.3¢ | $-0.56 | collecting (18/100) |
+| `overround` 30h | 33 | -3.3¢ | -18.0¢ to +9.2¢ | $-1.08 | collecting (33/100) |
 | `rv_updown_3c` 6h | 21 | -23.3¢ | -40.8¢ to -6.8¢ | $-4.89 | collecting (21/100) |
 | `rv_updown_6c` 6h | 17 | -29.2¢ | -48.5¢ to -10.1¢ | $-4.96 | collecting (17/100) |
 | `sell_longshot` 6h | 94 | -1.0¢ | -5.7¢ to +3.4¢ | $-0.96 | collecting (94/100) |
 | `sell_longshot` 12h | 9 | +8.3¢ | — | $+0.75 | collecting (9/100) |
-| `sell_longshot_div` 6h | 125 | +1.2¢ | -5.5¢ to +6.7¢ | $+1.56 | no edge yet (CI spans 0) |
+| `sell_longshot_div` 6h | 130 | +1.5¢ | -4.7¢ to +6.8¢ | $+1.95 | no edge yet (CI spans 0) |
 | `sell_longshot_div` 24h | 164 | -0.7¢ | -7.2¢ to +5.3¢ | $-1.11 | no edge yet (CI spans 0) |
-| `tails` 18h | 22 | +0.8¢ | -15.0¢ to +13.6¢ | $+0.18 | collecting (22/100) |
-| `tails` 24h | 21 | +8.3¢ | -4.5¢ to +16.1¢ | $+1.74 | collecting (21/100) |
-| `tails` 30h | 14 | +4.9¢ | — | $+0.69 | collecting (14/100) |
+| `tails` 18h | 24 | +2.2¢ | -13.0¢ to +13.7¢ | $+0.52 | collecting (24/100) |
+| `tails` 24h | 22 | +9.0¢ | -3.5¢ to +16.2¢ | $+1.98 | collecting (22/100) |
+| `tails` 30h | 18 | +8.1¢ | -3.7¢ to +15.4¢ | $+1.45 | collecting (18/100) |
 
 ## Daily reports
 
+- [2026-11-23](paper/reports/2026-11-23.md)
 - [2026-11-22](paper/reports/2026-11-22.md)
 - [2026-11-21](paper/reports/2026-11-21.md)
 - [2026-11-20](paper/reports/2026-11-20.md)
@@ -67,4 +68,3 @@ Full dashboard: https://functionalleaf.github.io/kalshi-weather/
 - [2026-11-12](paper/reports/2026-11-12.md)
 - [2026-11-11](paper/reports/2026-11-11.md)
 - [2026-11-10](paper/reports/2026-11-10.md)
-- [2026-11-09](paper/reports/2026-11-09.md)
